@@ -10,6 +10,8 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
   if (!data.user) redirect("/login");
+  const { data: profile } = await supabase.from("profiles").select("onboarding_completed").eq("id", data.user.id).single();
+  if (!profile?.onboarding_completed) redirect("/onboarding");
   const displayName = String(data.user.user_metadata.display_name ?? data.user.user_metadata.full_name ?? "Explorador");
   return <div className="dashboard-shell"><Sidebar /><div className="dashboard-main"><header className="dashboard-header"><div><span>Conta conectada</span><strong>{displayName}</strong></div><form action={signOut}><button className="icon-button" type="submit" aria-label="Sair da conta"><LogOut /></button></form></header>{children}</div></div>;
 }

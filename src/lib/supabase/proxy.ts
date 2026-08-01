@@ -21,7 +21,7 @@ export async function updateSession(request: NextRequest) {
 
   const { data } = await supabase.auth.getClaims();
   const signedIn = Boolean(data?.claims?.sub);
-  const isPrivateRoute = request.nextUrl.pathname.startsWith("/dashboard");
+  const isPrivateRoute = request.nextUrl.pathname.startsWith("/dashboard") || request.nextUrl.pathname === "/onboarding";
   const isAuthRoute = ["/login", "/cadastro"].includes(request.nextUrl.pathname);
 
   if (isPrivateRoute && !signedIn) {

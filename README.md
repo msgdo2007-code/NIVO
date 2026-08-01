@@ -4,7 +4,7 @@ Plataforma SaaS de páginas de links com identidade espacial, construída com Ne
 
 ## Estado atual
 
-Fase 1 — Fundação:
+Fases 1 e 2 — Fundação e Perfil:
 
 - landing responsiva e layout inicial do dashboard;
 - Supabase Auth por e-mail/senha e Discord; fluxo Google preparado atrás de uma flag;
@@ -13,6 +13,13 @@ Fase 1 — Fundação:
 - migration inicial de perfis, configurações, papéis, auditoria e Storage;
 - RLS em todas as tabelas acessíveis pelo cliente;
 - testes unitários das validações e de redirect seguro.
+- onboarding transacional com username protegido e escolha de template;
+- templates Aurora, Nebulosa e Órbita Minimal persistidos no banco;
+- editor de blocos com `dnd-kit`, duplicação, exclusão, ocultação e agendamento;
+- edição de perfil/aparência com React Hook Form e Zod;
+- upload validado de avatar no Supabase Storage;
+- perfil público em `/[username]` usando renderer por registro de tipos;
+- RLS para separar rascunhos privados de blocos públicos.
 
 ## Desenvolvimento
 
@@ -48,7 +55,8 @@ O Client ID e o Client Secret do Discord são configurados no painel do Supabase
 - [Banco de dados](docs/DATABASE.md)
 - [Permissões e RLS](docs/PERMISSIONS.md)
 - [Deploy](docs/DEPLOY.md)
+- [Funcionalidades concluídas e pendentes](docs/STATUS.md)
 
 ## Próxima fase
 
-Onboarding, escolha de username, templates iniciais, blocos do editor e perfil público.
+Dashboard analítico, eventos de visualização/clique, agregações e atividade recente.
