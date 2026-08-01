@@ -8,7 +8,7 @@ const items = [
   { icon: Link2, label: "Links", href: "/dashboard/editor" },
   { icon: Palette, label: "Aparência", href: "/dashboard/perfil" },
   { icon: Headphones, label: "Músicas", href: null },
-  { icon: BarChart3, label: "Analytics", href: null },
+  { icon: BarChart3, label: "Analytics", href: "/dashboard" },
   { icon: Trophy, label: "Progressão", href: null },
   { icon: Coins, label: "Carteira", href: null },
   { icon: ShoppingBag, label: "Mercado NIVO", href: null },

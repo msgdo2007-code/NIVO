@@ -2,9 +2,10 @@
 import { ArrowUpRight, CircleHelp, Clock3, Gamepad2, ImageIcon, Mail, Package, Play, Share2 } from "lucide-react";
 import type { ComponentType } from "react";
 
+import { TrackedLink } from "@/components/analytics/tracked-link";
 import type { BlockType, ProfileBlock } from "@/types/profiles";
 
-type RendererProps = { block: ProfileBlock };
+type RendererProps = { block: ProfileBlock; track?: boolean };
 
 function safeExternalUrl(value: unknown) {
   if (typeof value !== "string") return null;
@@ -16,11 +17,12 @@ function safeExternalUrl(value: unknown) {
   }
 }
 
-function LinkBlock({ block }: RendererProps) {
+function LinkBlock({ block, track }: RendererProps) {
   const href = safeExternalUrl(block.content.url);
   const description = typeof block.content.description === "string" ? block.content.description : "";
   const content = <><span><strong>{block.title || "Abrir link"}</strong>{description && <small>{description}</small>}</span><ArrowUpRight /></>;
-  return href ? <a className="public-link" href={href} target="_blank" rel="noreferrer">{content}</a> : <div className="public-link disabled">{content}</div>;
+  if (!href) return <div className="public-link disabled">{content}</div>;
+  return track ? <TrackedLink className="public-link" href={href} profileId={block.profile_id} blockId={block.id}>{content}</TrackedLink> : <a className="public-link" href={href} target="_blank" rel="noreferrer">{content}</a>;
 }
 
 function HeadingBlock({ block }: RendererProps) {
@@ -42,11 +44,12 @@ function SeparatorBlock() {
   return <div className="public-separator"><i /><span>✦</span><i /></div>;
 }
 
-function FeatureBlock({ block, icon: Icon }: RendererProps & { icon: ComponentType<{ "aria-hidden"?: boolean }> }) {
+function FeatureBlock({ block, icon: Icon, track }: RendererProps & { icon: ComponentType<{ "aria-hidden"?: boolean }> }) {
   const href = safeExternalUrl(block.content.url);
   const text = typeof block.content.text === "string" ? block.content.text : "";
   const body = <><Icon aria-hidden /><span><strong>{block.title}</strong>{text && <small>{text}</small>}</span>{href && <ArrowUpRight />}</>;
-  return href ? <a className={`public-feature type-${block.type}`} href={href} target="_blank" rel="noreferrer">{body}</a> : <div className={`public-feature type-${block.type}`}>{body}</div>;
+  if (!href) return <div className={`public-feature type-${block.type}`}>{body}</div>;
+  return track ? <TrackedLink className={`public-feature type-${block.type}`} href={href} profileId={block.profile_id} blockId={block.id}>{body}</TrackedLink> : <a className={`public-feature type-${block.type}`} href={href} target="_blank" rel="noreferrer">{body}</a>;
 }
 
 const feature = (Icon: ComponentType<{ "aria-hidden"?: boolean }>) => function RegisteredFeature(props: RendererProps) {

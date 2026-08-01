@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProfileRenderer } from "@/components/profile-renderer/profile-renderer";
+import { ProfileAnalytics } from "@/components/analytics/profile-analytics";
 import { createClient } from "@/lib/supabase/server";
 import { usernameSchema } from "@/lib/validations/profile";
 import type { Profile, ProfileBlock, ProfileSettings } from "@/types/profiles";
@@ -30,5 +31,5 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
   const { username } = await params;
   const bundle = await loadPublicProfile(username);
   if (!bundle) notFound();
-  return <main className="public-profile-page"><ProfileRenderer {...bundle} /></main>;
+  return <main className="public-profile-page"><ProfileAnalytics profileId={bundle.profile.id} /><ProfileRenderer {...bundle} /></main>;
 }

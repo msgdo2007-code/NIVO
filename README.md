@@ -4,7 +4,7 @@ Plataforma SaaS de páginas de links com identidade espacial, construída com Ne
 
 ## Estado atual
 
-Fases 1 e 2 — Fundação e Perfil:
+Fases 1, 2 e 3 — Fundação, Perfil e Analytics:
 
 - landing responsiva e layout inicial do dashboard;
 - Supabase Auth por e-mail/senha e Discord; fluxo Google preparado atrás de uma flag;
@@ -20,6 +20,10 @@ Fases 1 e 2 — Fundação e Perfil:
 - upload validado de avatar no Supabase Storage;
 - perfil público em `/[username]` usando renderer por registro de tipos;
 - RLS para separar rascunhos privados de blocos públicos.
+- visualizações e cliques registrados exclusivamente pelo servidor;
+- deduplicação, rate limit, bloqueio de bots e hashes HMAC rotativos sem IP bruto;
+- agregações diárias de visualizações, visitantes únicos, cliques e CTR;
+- dashboard real com série temporal, links, origens, dispositivos e atividade recente.
 
 ## Desenvolvimento
 
@@ -46,6 +50,7 @@ npm run build
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: chave pública, permitida no navegador e protegida por RLS.
 - `NEXT_PUBLIC_GOOGLE_AUTH_ENABLED`: use `true` somente depois de configurar o provedor Google no Supabase.
 - `SUPABASE_SECRET_KEY`: chave exclusiva do servidor; nunca use prefixo `NEXT_PUBLIC_`.
+- `ANALYTICS_HASH_SECRET`: segredo aleatório com 32 ou mais caracteres, usado apenas no servidor para pseudonimizar visitantes.
 - `CRON_SECRET` e `ADMIN_EMAILS`: reservadas para fases futuras.
 
 O Client ID e o Client Secret do Discord são configurados no painel do Supabase Auth, não em variáveis do Next.js.
@@ -59,4 +64,4 @@ O Client ID e o Client Secret do Discord são configurados no painel do Supabase
 
 ## Próxima fase
 
-Dashboard analítico, eventos de visualização/clique, agregações e atividade recente.
+Economia, progressão, missões e conquistas sem recompensar tráfego não validado.

@@ -1,11 +1,19 @@
-import { ArrowUpRight, BarChart3, Eye, MousePointerClick, Orbit, PencilLine, Sparkles, UsersRound } from "lucide-react";
+import { ArrowUpRight, Orbit, Sparkles } from "lucide-react";
 import Link from "next/link";
 
+import { AnalyticsDashboard } from "@/components/analytics/analytics-dashboard";
+import { getAnalyticsSummary } from "@/features/analytics/queries";
 import { getOwnProfileBundle } from "@/features/profiles/queries";
 
-const metrics = [[Eye, "Visualizações"], [UsersRound, "Visitantes únicos"], [MousePointerClick, "Cliques"], [BarChart3, "CTR"]] as const;
-
 export default async function DashboardPage() {
-  const { profile, blocks } = await getOwnProfileBundle();
-  return <main className="dashboard-page"><section className="dashboard-title"><div><span className="eyebrow">Centro de comando</span><h1>Bom ter você em órbita.</h1><p>Seu perfil está {profile.is_published ? "publicado" : "em modo privado"} com {blocks.length} {blocks.length === 1 ? "bloco" : "blocos"}.</p></div>{profile.username && <Link className="button primary" href={`/${profile.username}`} target="_blank">Ver meu perfil <ArrowUpRight /></Link>}</section><section className="metrics">{metrics.map(([Icon, label]) => <article key={label}><span><Icon /></span><div><small>{label}</small><strong>—</strong></div></article>)}</section><section className="dashboard-grid"><article className="empty-panel"><span className="empty-icon"><PencilLine /></span><h2>Continue criando</h2><p>Organize seus blocos, atualize textos e experimente a aparência até o universo ficar com a sua cara.</p><Link className="button ghost" href="/dashboard/editor">Abrir editor</Link></article><article className="profile-placeholder"><div className="mini-profile"><div className="mini-space"><Orbit /></div><span /><h3>{profile.display_name}</h3><p>@{profile.username}</p>{blocks.slice(0, 3).map((block) => <div key={block.id} />)}</div><footer><Sparkles /> {profile.is_published ? "Perfil publicado" : "Perfil privado"}</footer></article></section></main>;
+  const [{ profile, blocks }, summary] = await Promise.all([
+    getOwnProfileBundle(),
+    getAnalyticsSummary(30),
+  ]);
+
+  return <main className="dashboard-page">
+    <section className="dashboard-title"><div><span className="eyebrow">Centro de comando</span><h1>Seu universo em números.</h1><p>Dados reais e protegidos dos últimos 30 dias.</p></div>{profile.username && <Link className="button primary" href={`/${profile.username}`} target="_blank">Ver meu perfil <ArrowUpRight /></Link>}</section>
+    <AnalyticsDashboard summary={summary} />
+    <section className="dashboard-preview-strip"><div><span className="eyebrow">Perfil</span><h2>{profile.display_name}</h2><p>@{profile.username} · {blocks.length} {blocks.length === 1 ? "bloco" : "blocos"} · {profile.is_published ? "publicado" : "privado"}</p><Link className="button ghost" href="/dashboard/editor">Editar perfil <Sparkles /></Link></div><div className="mini-profile"><div className="mini-space"><Orbit /></div><span /><h3>{profile.display_name}</h3><p>@{profile.username}</p>{blocks.slice(0, 3).map((block) => <div key={block.id} />)}</div></section>
+  </main>;
 }
