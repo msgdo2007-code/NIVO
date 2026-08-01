@@ -8,3 +8,7 @@
 6. Faça um novo deploy depois de qualquer alteração de variável; deployments existentes não recebem valores retroativamente.
 
 Nunca use o callback Next.js (`/auth/callback`) diretamente no Discord. Discord retorna ao Supabase; o Supabase retorna ao aplicativo.
+
+## Cookies de autenticação
+
+O Supabase SSR usa codificação `tokens-only` nos clientes de navegador, servidor e proxy para manter o header abaixo dos limites da borda da Vercel. Ao migrar uma sessão antiga que já retorna `494 REQUEST_HEADER_TOO_LARGE`, apague uma vez os cookies de `nivo-gamma.vercel.app` no navegador e entre novamente; a requisição bloqueada não chega ao aplicativo e, por isso, não pode ser limpa pelo servidor.
