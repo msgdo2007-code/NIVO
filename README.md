@@ -7,7 +7,7 @@ Plataforma SaaS de páginas de links com identidade espacial, construída com Ne
 Fase 1 — Fundação:
 
 - landing responsiva e layout inicial do dashboard;
-- Supabase Auth por e-mail/senha, Google e Discord;
+- Supabase Auth por e-mail/senha e Discord; fluxo Google preparado atrás de uma flag;
 - confirmação de e-mail, recuperação e atualização de senha;
 - sessão SSR com cookies, callback PKCE e proteção de rotas privadas;
 - migration inicial de perfis, configurações, papéis, auditoria e Storage;
@@ -37,6 +37,7 @@ npm run build
 - `NEXT_PUBLIC_SITE_URL`: origem pública sem barra final.
 - `NEXT_PUBLIC_SUPABASE_URL`: URL do projeto Supabase.
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: chave pública, permitida no navegador e protegida por RLS.
+- `NEXT_PUBLIC_GOOGLE_AUTH_ENABLED`: use `true` somente depois de configurar o provedor Google no Supabase.
 - `SUPABASE_SECRET_KEY`: chave exclusiva do servidor; nunca use prefixo `NEXT_PUBLIC_`.
 - `CRON_SECRET` e `ADMIN_EMAILS`: reservadas para fases futuras.
 
